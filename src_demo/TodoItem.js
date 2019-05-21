@@ -10,7 +10,7 @@ class TodoItem extends React.Component{
     render(){
         return(
             <Fragment>
-                <p>{this.props.match.params.tel}</p>
+                {/* <p>{this.props.match.params.tel}</p> */}
                <p>{this.props.content}<button onClick={this.handleDelete}>X</button></p>
             </Fragment>
         )

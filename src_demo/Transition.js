@@ -3,6 +3,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import './Transition.css';
 import TodoItem from './TodoItem';
 class Transition extends React.Component{
+    static defaultProps={lx:'dfasggdfg'}
     constructor(){
         super();
         this.state={
@@ -21,6 +22,7 @@ class Transition extends React.Component{
             inputValue:''
         });
         // this.refs.todoVal.value='';
+        
     }
     deleteItem(index){
         // this.state.list.splice(index,1);
@@ -46,6 +48,7 @@ class Transition extends React.Component{
             <div>
                 <input type="text" ref="todoVal" onChange={this.getValue} value={this.state.inputValue}/>
                 <button onClick={this.addTodo}>Add Tode</button>
+                <p>{this.props.lx}</p>
                 <ul>
                     <ReactCSSTransitionGroup 
                         transitionName="reactAnim"

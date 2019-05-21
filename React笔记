@@ -48,4 +48,151 @@ src: 项目结构中的主要目录，因为后期所有的JS、路由、组件�
 		npm eject 首先会提示确认是否执行eject操作，这个操作是不可逆转的，一旦暴露出来配置项，就无法隐藏回去了
 		如果当前的项目基于GIT管理，在执行eject的时候，如果还没有提交到历史区的内容，需要先提交到历史区，然后在eject才可以，否则报错
 		=》再去修改对应的配置项
-	我们预览项目的时候，也是先基于webpack编译，把编译后的内容放到浏览器中运行，所以如果项目中使用了less，我们需要修改webpack配置项，在配置项中国加入less的编译工作，这样后期预览项目，首先基于webpack把less编译为css，然后呈现在页面中。在页面中有新的有修改22222
+		一旦暴露后，项目目录中多了两个文件夹：
+		config：存放的是webpack的配置文件
+			webpack.config.dev.js:开发环境下的配置项（npm start）
+			webpack.config.prod.js:生产环境下的配置项（npm build）
+
+		scripts：存放的是可执行脚本的JS文件
+			start.js npm start 执行的就是这个JS
+			build.js npm build执行的就是这个JS
+		package.json 中的内容
+		【举个例子：需要配置less】
+		安装less ：npm add less less-loader
+		less是开发和生产环境下都需要配置的
+		
+	我们预览项目的时候，也是先基于webpack编译，把编译后的内容放到浏览器中运行，所以如果项目中使用了less，我们需要修改webpack配置项，在配置项中国加入less的编译工作，这样后期预览项目，首先基于webpack把less编译为css，然后呈现在页面中。
+	set HTTPS=true&&npm start 开启HTTPS协议模式（设置环境变量HTTPS的值）
+	set PORT=64433修改端口号
+二、react react-dom
+	渐进式框架：一种最流行的框架设计思想，一般框架总都包含很多内容，这样导致框架的体积过于臃肿，拖慢加载的速度。真实项目中，我们使用一个框架，不一定用到所有的功能，此时我们应该把框架的功能拆分，用户相用什么让其自己自由组合即可。
+	全家桶：渐进式框架N多部分的组合 vue/vue-router/vuex/axios(fetch)/vue-cli/vant
+	react全家桶 create-react-app/react/react-dom/react-router/redux/react-redux/axios/antdesign/dva/saga/mobx
+	1、react：React框架的核心部分，提供了component类可以供我们进行组件划分，提供了钩子函数（生命周期函数：所有的生命周期函数都是基于回调函数完成的）
+	2、react-dom:把JSX语法（React独有的语法）渲染为真实DOM（能够放到页面中展示的结构都叫做真实的的DOM）的组件
+三、把JSX（虚拟DOM）变为真实的DOMJSX语法：1、我们不建议把JSX直接渲染到body中，而是放在自己创建的一个容器中，一般我们都放在一个ID为ROOT的DIV中即可
+	2、在JSX中出现的{}是存放在JS中的，但是要求JS代码执行完成有返回结果（JS表达式）
+	-》不能直接放一个对象数据类型的值（对象（除了给style赋值）、数组（数组中如果没有对象都是基本值或者是JSX元素，这样是可以的）、函数都不行）
+	-》可以是基本类型的值（布尔类型什么都不显示、null、undefined也是JSX元素，代表的是空）
+	-》循环判断的语句都不支持，但是支持三元运算符
+	3、循环数组创建JSX元素（一般都基于数组的map方法完成迭代），需要给创建的元素设置唯一的key值（当前本次循环内唯一即可）
+	4、只能出现一个根元素
+	5、给元素设置样式类用的是className而不是class
+	6、style中不能直接的写样式字符串，需要基于一个样式对象来遍历赋值
+	JSX渲染机制： 
+		1、基于babel中的语法解析模块（BABEL-PRESET-REACT）把JSX语法编译为React.createElemet()结构
+		2、执行React.createElemet(type,props,children),创建一个对象（虚拟DOM）type：'h1',ref:null,key:null,props:{id:'',children:'',className:'',style:''}
+		3、ReactDOM.render(JSX语法最后生成的对象、容器)。基于RENDER方法把生成的对象动态创建为DOM元素，插入到指定的容器中。
+	1.创建一个对象（默认有四个属性：type/props/ref/key）,最后要把这个对象返回
+	2、根据传递的值修改这个对象 type=》对应你传递的type  props=》需要做一些处理，大部分传递props中的属性都赋值给对象的props，有一些比价特殊-》如果是ref或者key，我们需要把传递的props中的这两个属性值，给创建对象的两个属性，而传递的props中的把这两个值删除掉
+	=》把传递的Children作为新创建对象的PROPS中的属性
+三、react组件
+	不管事vue还是react框架，设计之初都是期望我们按照“组件/模块管理”的方式来构建程序的，也就是把程序划分为一个个的组件来处理。
+	优势：
+		1、有助于多人协作开发
+		2、开发的组件可以复用
+		...
+	react中创建组件有两种方式：
+		1、函数声明式组件
+		2、基于继承component类创建组件
+		super()=>ES6中的extends继承，一旦使用了constructor，第一行位置必须设置super执行：相当于React.Component.call(this),也就是call继承，把私有父类私有的属性继承过来  this.props属性集合  this.refs ref集合（非受控组件中用到） this.context上下文
+		基于Create-element把JSX转换为一个对象，当render渲染这个对象的时候，遇到type是一个函数或者类，不是直接创建元素，而是先把方法执行：
+		如果就是函数式声明的组件，就把它当做普通方法执行（方法中的this是undefined），把函数返回的JSX元素（也就是解析后的对象）进行渲染
+		如果是声明式的组件，会把当前类new他执行，创建类的一个实例（当前本次调取组件就是它的实例），执行constructor之后，会执行this.render(),把render中返回的JSX拿过来渲染，所以“类声明式组件，必须有一个render方法，方法中需要返回一个JSX元素”
+		但是不管事哪一种方式，最后都会把解析出来的props属性对象作为实参船体给对应的函数或者类
+		constructor(props,context,updater):props:当render渲染并且把当前类执行创建实例的时候，会把之前JSX解析出来的props对象中的信息（可能有children）传递给参数props==》调取组件传递的属性
+		==如果只写super():虽然创建实例的时候只把属性传递过来了，但是并没有传递给父组件，也就是没有把属性挂载到实例上，使用this.props获取的结果是undefined
+		==如果super(props):在继承父类私有的时候，就把传递的属性挂载到了一个子类的实例上，constructor中就可以使用this.props了
+		注意：即使在constructor中不设置形参props接收属性，执行super的时候也不传这个属性，除了constructor中不能使用this.props,其他声明周期函数中都可以使用（也就是执行完成constructor，react已经帮我们把传递和属性接收，并且挂载到实例上了）
+		----总结：创建组件有两种方式：“函数式”，“类”。
+		函数式：1、能实现的功能简单，只是简单的调取和返回JSX
+		创建类式：1、操作相对复杂一些，但是也可以实现更为复杂的业务功能
+			2、能够使用生命周期函数业务
+			3、函数式可以理解为静态组件（组件中的内容调取的时候就已经固定了，很难再修改），而类这种方式，可以基于组件内部的状态来动态更新渲染的内容
+属性：组件中的属性是调取组件的时候（创建类实例的时候）传递给组件的信息，而这部分信息是“只读”的，（只能获取不能修改）=》“组件的属性是只读的”
+	this.props是只读的，我们无法在方法中修改它的值，但是可以给其设置默认值或者设置一些规则（例如：设置是否是必须传递的以及传递值的类型等）
+	static defaultProps={lx:'系统提示'} 默认属性
+	prop-types是facebook公司开发的一个插件，基于这个插件我们可以给组件传递的属性设置规则（设置的规则不会影响页面的渲染，但是会在控制台抛出警告错误）
+	static propsTypes={
+		con:propsTypes.string.isRequired//不仅可以传递的内容是字符串，并且是必须传递
+
+	}
+react中的组件有两个非常重要的概念：
+所谓函数式组件是静态组件：和执行普通函数一样，调取一次组件，就把组件中的内容获取到，插入到页面中，如果不重新调取组件，显示的内容是不会发生任何改变的,真实项目中只有调取组件，组件的内容不会再次改变的情况下，我们才可能使用函数式组件
+	1、组件的属性：[只读]调取组件的时候传递进来的信息
+	2、组件的状态：[读写]自己在组件中设定和规划的（只有类声明式才有状态的管控，函数式组价声明不存在状态的管理）
+组件状态类似于vue中的数据驱动：我们数据绑定的时候是基于状态值绑定，当修改组件状态后，对应的JSX元素也会跟着重新渲染（差异渲染：只把数据改变的部分渲染，基于DOM-DIFF算法完成）
+当代框架最重要的核心思想就是“数据操控视图（视图影响数据）”，告别JQ手动操作dom时代，我们以后只需要改变数据，框架会帮我们重新渲染视图，从而减少直接操作dom提高性能，也有助于开发效率。
+setSate的回调函数，当通知REACT把需要重新渲染的JSX元素渲染完成后，执行回调操作（类似于声明周期函数的componentDidUpdate，项目中一般使用钩子函数而不是这个回调）
+设置回调的原因：setState是异步操作，异步操作修改为同步操作是
+async tt(){awiat} 
+JSX中俄的事件绑定 console.log(this)//undefined（不是我们理解的当前操作元素）   event.target:通过事件源可以获取当前操作的元素（一般很少操作，因为框架主要是数据驱动所有DOM的改变）
+Refs：是react中专门提供通过操作DOM来实现需求的方式，他是一个对象，存储了当前组件中所有设置ref属性的元素（元素REF属性值是啥，Refs中存储的元素的属性名就是啥）
+在React组件中：
+	1、基于数据驱动（修改状态数据，react帮助我们重新渲染视图）完成的组件叫做“受控组件（受数据控制的组件）”
+	2、基于ref操作dom实现视图更新的，叫做“非受控组件”
+===》真是项目中建议大家多实用“受控组件”
+vue：MVVM 数据更改视图跟着更改，视图更改数据也跟着更改（双向数据绑定）
+react：MVC 数据更改视图跟着更改（原本是单向数据绑定，但是我们可以自己构建出双向的效果）
+React 生命周期函数（钩子函数）：描述一个组件或者程序从创建到销毁的过程，我们可以在过程中间基于钩子函数完成一些自己的操作（例如：在第一次渲染完成做什么，或者在二次即将重新渲染之前做什么等...）
+	[基本流程]
+	1、constructor 创建一个组件
+	componentWillMount 第一次渲染之前  在will_mount总，如果直接setState修改数据，会把状态信息改变后，然后render和did_mount,但是如果setstate是放到一个异步操作中完成（例如：定时器或者从服务器获取数据）也是先执行render和did，然后再执行这个异步操作修改状态，紧接着走修改流程（这样和did-mount中没区别），所以我们一般把数据请求放到did-mount中。
+	===》真实项目中的数据绑定，一般第一次组件渲染，我们都是绑定的默认数据，第二次才是绑定的从服务器获取的数据（有些需求我们需要根据数据是否存在判断显示隐藏等）
+	2、render 第一次渲染
+	componentDidMouth 第一次渲染之后  一般数据绑定放在这里
+	[修改流程：当组件的状态数据发生改变或者传递给组件的属性发生改变（重新调用组件传递不同的属性都会引发render重新执行渲染（渲染也是差异渲染））]
+	shouldComponentUpdate 是否允许组件重新渲染（允许则执行后面的函数，不允许直接结束即可）
+	在这个钩子函数中，我们获取的state不是最新修改的而是上一次的state值，这个方法中有两参数nextProps,nextState  nextProps:代表最新修改的属性，nextState代表最新修改的状态
+	componentWillUpdate 重新渲染之前
+	render 第二次及以后重新渲染 
+	componentDIdUpdate 重新渲染之后
+	componentWillReceiveProps：父组件把传递给子组件的属性发生改变后触发的钩子函数
+	[卸载：原有渲染的内容是不消失的，只不过以后不能基于数据改变视图了]
+	componentWillUnmout:卸载组件之前
+父组件把信息传递给子组件：
+	基于属性传递即可（而且传递是单方向的：只能父亲通过属性把信息给儿子，儿子不能直接把信息作为属性传递给父亲）
+	后期子组件中的信息需要修改：可以让父组件传递给子组件的信息发生变化（也就是子组件接收的属性发生变化，子组件会重新渲染==》componentWillReceiveProps钩子函数）
+子组件改父组件：
+	1、把父组件中的一个方法作为一个属性传递给子组件
+	2、在子组件中，把基于属性传递进来的方法，在合适的时候执行（相当于在执行父组件中的方法，而这个方法中完全可以操作父组件中的信息）
+知识点：
+	1、create-element在处理的时候，遇到一个组件，返回的对象当中：TYPE就不在是字符串标签名了，而是一个函数（类），但是属性还是存在PROPS中
+	2、render渲染的时候，我们需要处理，首先判读type类型，type类型如果是一个字符串，就直接创建一个元素标签，如果函数或者类，就把函数执行，把props中的每一项（包含CHILDREN）传递给函数
+	在执行函数的时候，把函数中的render的JSX转换为新的对象（通过CREATE-ELEMENT），把这个对象返回；紧接着按照以往的渲染方式，创建DOM元素，插入到指定的容器中即可。
+ES6 子类只能继承父类原型上的属性和方法，父类私有的属性和方法，对于父类作为普通对象设置的私有属性和方法是无法继承的
+React Redux 
+	redux :是一个专门的管理状态的JS库（不是react插件库）
+	作用：集中式的管理react应用中多个组件共享的状态
+createStore():createStore函数接收另一reducer中的函数，返回生成新的store对象
+getState():获取当前时刻的state
+action：action是一个对象，其中type属性是必须的，表示action的名称，其他属性可以自由设置。
+store.dispatch():触发action的唯一方法，store.dispatch接受一个action对象作为参数，将它发送出去
+store.subscribe():store允许使用store.subscribe方法设置监听函数，一旦state发生变化，就自动执行这个函数。
+
+1、使用函数createStore创建store数据点
+2、创建Reducer。他要改变的组件，他获取state和action，生成新的state
+3、dispatch执行，dispatch传入改变的action
+3、用subscribe订阅改变的state
+react-redux :将所有组件分成两大类
+1、UI组件
+	只负责UI的呈现，不带有任何业务逻辑，通过props接收数据（一般数据和函数），不使用任何Redux的API，一般保存在component文件夹下
+2、容器组件：负责管理数据和业务逻辑，不负责UI的呈现，使用Redux的API，一般保存字啊containers文件夹下
+1、Provider 让所有组件都可以得到state数据 接收到一个store 
+2、connect()：用于包装UI组件生成容器组件
+3、mapStateToprops()：将外部的数据(即state对象)转换为UI组件的标签属性 const mapStateToprops=function(state){
+	return {
+		value:state 
+	}
+}
+4、mapDispatchToProps :将分发action的函数转换为UI组件的标签属性，简洁语法可以直接指定为actions对象或包含多个action方法的对象。
+redux默认是不能异步处理的
+redux异步编程 rendux-thunk
+npm install --save redux-thunk
+1、reducer：纯函数，只承担计算State的功能
+2、View：与state一一对应，可以看作state的视觉层，也不适合承担其他功能。
+3、Action:存放数据的对象，即消息的载体，只能被别人操作，自己不能进行任何操作。
+使用redux调试工具  
+	1、安装Chrome浏览器插件 redux-devtools
+	2、下载工具依赖包 npm install --save-dev redux-devtools-extension
+	
