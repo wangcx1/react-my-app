@@ -205,3 +205,109 @@ yarn:新一代包管理工具
     yarn add  
     yarn remove
     yarn install
+四、React Router4.0基本概念介绍
+	react-router 提供了一些router的核心api，包括Router、route、switch等
+	 4.0版本已不需要路由配置，一切皆组件
+	react-router-dom 提供了browserRouter、HashRouter、Route、Link、NavLink 
+	路由模块安装
+	npm install react-router-dom --save
+	react-router-dom核心用法
+	HashRouter 和 BrowserRouter
+	Route：path、exact、component、render
+	NavLink、Link
+	Switch
+	Redirect
+Mock数据 easy-mock 模拟数据  mock.js
+Promise
+项目工程化：目的：提高开发效率，减小维护难度
+	如何解决：
+		1、项目架构设计
+		2、目录结构定义
+		3、制定项目开发规范（ESLit规范）
+		4、模块化、组件化
+		5、前后端接口规范
+		6、性能优化、自动化部署（压缩、合并、打包）
+
+
+常用git 命令
+git init 在当前目录新建一个Git代码库
+git clone [url] 下载一个项目和它的整个代码历史
+git config [--global] user.name '[name]'
+git config [--global] user.email '[email address]' 设置提交代码时的用户信息
+git add . 添加当前目录的所有文件到暂存区
+git rm [file1] [file2] 删除工作区文件，并且将这次删除放入暂存区
+git commit -m [message] 提交暂存区到仓库区
+git commit -a 提交工作区自上次commit之后的变化，直接到仓库区
+git commit -v 提交时显示所有diff信息
+git branch 列出所有本地分支
+git branch -r 列出所有远程分支
+git branch -a 列出本地分支和远程分支
+git merge [branch] 合并指定分支到当前分支
+git branch -d [branch-name] 删除分支
+git push origin --delete [branch-name]
+git branch -dr [remote/branch] 删除远程分支
+git status 显示有变更的文件
+git log 显示当前分支的版本历史
+git diff 显示暂存区和工作区的差异
+git reflog 显示当前分支的最近几次提交
+git fetch origin dev:tmp 把线上的拉到本地暂存区
+git diff dev tmp 本地和线上分支比较
+git push -u origin dev 从仓库区提交到远程
+git reset --hard 9cd3e7c      git reset 一下仓库最新的commit
+退出merage:  :q
+HTTP简介：http世超文本传输协议，它是基于TCP/IP通信协议来传递数据（HTML文件、图片文件、查询结果等）。http协议工作于客户端-服务端架构为上。浏览器作为http客户端通过URL向HTTP服务端即WEB服务器发送所有请求。web服务器根据接收到的请求后，向客户端发送响应信息。
+HTTP之URL：HTTP使用统一资源标识符（URI）来传输数据和建立连接。URL是一种特殊类型的URI，包含了用于查找某个资源的足够的信息。
+一个完整的URL包括下面几个部分：1、协议部分：http或者HTTP   2、域名部分：“www.baidu.com”。一个URL中，也可以使用IP地址作为域名使用  3、端口部分：域名和端口之间使用“：”作为分隔符。如果省略端口将采用默认端口
+4、虚拟目录部分：从域名后的第一个“/”开始到最后一个“/”为止。是虚拟目录部分。5、文件名部分：从域名后的最后一个“/”开始到“？”为止，是文件名部分。如果没有“？”，则是从域名后的最后一个“/”开始到“#”为止，是文件部分，如果没有“？”和“#”，那么从域名后的最后一个“/”开始到结束，都是文件名部分。
+6、锚部分：从“#”开始到最后，都是锚部分。
+7、参数部分：从“？”开始到“#”为止之间的部分为参数部分，又称为搜索部分、查询部分。参数之间用“&”作为分隔符。
+URL和URI的区别：URI--统一资源标识符，用来唯一的标识一个资源。
+	Web上可用的每种资源如HTML文档、图像、视频、片段、程序等都是一个来URI拉力定位的。URI一般由三部分组成：1、访问资源的命名机制 2、存放资源的主机名 3、资源自身的名称，由路径表示，着重强调于资源
+	URL---统一资源定位器，它是一种具体的URI，即URL可以用来表示标识一个资源，而且还指明了如何locate这个资源。
+	URL是Internet上用来描述信息资源的字符串，主要用在各种www客户程序和服务器程序上。
+HTTP之状态码：
+	200 OK                        //客户端请求成功
+	400 Bad Request               //客户端请求有语法错误，不能被服务器所理解
+	401 Unauthorized               //请求未经授权，这个状态代码必须和WWW-Authenticate报头域一起使用 
+	403 Forbidden                 //服务器收到请求，但是拒绝提供服务
+	404 Not Found                 //请求资源不存在，eg：输入了错误的URL
+	405							//不允许使用该方法
+	500 Internal Server Error     //服务器发生不可预期的错误
+	503 Server Unavailable        //服务器当前不能处理客户端的请求，一段时间后可能恢复正常
+HTTP请求方法：
+	GET  请求指定的页面信息，并返回实体主体。
+	HEAD     类似于get请求，只不过返回的响应中没有具体的内容，用于获取报头
+	POST     向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST请求可能会导致新的资源的建立和/或已有资源的修改。
+	PUT  	从客户端向服务器传送的数据取代指定的文档的内容。
+	DELETE   请求服务器删除指定的页面。
+	CONNECT  HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。
+	OPTIONS  允许客户端查看服务器的性能。
+	TRACE    回显服务器收到的请求，主要用于测试或诊断。
+快速删除项目中node_modules目录
+安装 rimraf模块
+npm install rimraf -g
+删除操作
+rimraf node_modules
+权限设置：
+一个后台权限系统，应该有四个模块：部门管理、用户管理、角色管理、权限管理。
+角色是基于业务管理需求而添加的固定标签，每个角色对应明确的系统权限，其所拥有的的系统权限一般不会随意更改，并且角色也不会随着用户的被添加和被移除而进行改变，稳定性强于用户管理。
+通过“关联权限”来给角色赋权，也就是角色的权限管理。
+  Redux
+  Redux基本介绍
+	1、单向数据流：从父组件流向子组件，兄弟组件无法共享数据
+	2、State：React中的状态，是只读对象，不可直接修改
+	3、Reducer：基本函数，用于对State的业务处理
+	4、Action：普通对象，用于描述事件行为，改变state
+	Redux安装
+	yarn add redux --save 
+	yarn add react-redux --save
+Redux集成
+	创建Action模块
+	创建Reducer模块
+	创建Store模块
+	通过connect方法将React组件和Redux链接起来
+	添加Provider作为项目的跟组件，用于数据的存储
+Redux调试工具安装
+	首先，在Chrome中安装Redux Devtools扩展
+	yarn add redux-devtools-extension
+箭头函数，没有大括号包裹着就代表返回，加上大括号要写return
